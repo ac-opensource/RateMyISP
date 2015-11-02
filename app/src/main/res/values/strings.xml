@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">RateMyISP</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="welcome">Welcome!</string>
+    <string name="main_description">Please rate your ISP accordingly and as fair and honest as you can.</string>
+</resources>
