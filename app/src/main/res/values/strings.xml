@@ -7,4 +7,15 @@
     <string name="action_settings">Settings</string>
     <string name="welcome">Welcome!</string>
     <string name="main_description">Please rate your ISP accordingly and as fair and honest as you can.</string>
+    <string name="submit">Submit</string>
+
+    <string-array name="isp_array">
+        <item>PLDT</item>
+        <item>Bayantel</item>
+        <item>Globe</item>
+        <item>Smart</item>
+        <item>Sun</item>
+        <item>Sky Broadband</item>
+    </string-array>
+
 </resources>
