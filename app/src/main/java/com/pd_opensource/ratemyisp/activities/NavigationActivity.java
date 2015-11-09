@@ -12,7 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.pd_opensource.ratemyisp.R;
-import com.pd_opensource.ratemyisp.fragments.RateISPFragment;
+import com.pd_opensource.ratemyisp.fragments.AddRatingFragment;
+import com.pd_opensource.ratemyisp.fragments.SelectISPFragment;
+import com.pd_opensource.ratemyisp.models.Events;
+
+import de.greenrobot.event.EventBus;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -73,7 +77,7 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_rate) {
-            addFragment(new RateISPFragment());
+            addFragment(new SelectISPFragment());
         } else if (id == R.id.nav_home) {
             getSupportFragmentManager().popBackStack();
         } else if (id == R.id.nav_manage) {
@@ -94,5 +98,32 @@ public class NavigationActivity extends AppCompatActivity
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(fragment.getClass().getSimpleName())
                 .commit();
+    }
+
+    // This method will be called when a SomeOtherEvent is posted
+    public void onEvent(Events events){
+        if (events.eventName.equals(Events.EVENT_ISP_SELECTED)) {
+            Fragment fragment = AddRatingFragment.newInstance(events.eventDescription);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .addToBackStack(fragment.getClass().getSimpleName())
+                    .commit();
+        } else if (events.eventName.equals(Events.EVENT_REVIEW_SUBMITTED)) {
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                getSupportFragmentManager().popBackStack();
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

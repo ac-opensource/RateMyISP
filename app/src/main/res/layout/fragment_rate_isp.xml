@@ -8,11 +8,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context=".fragments.RateISPFragment">
+    tools:context=".fragments.SelectISPFragment">
 
     <TextView
-        android:id="@+id/rate_header"
-        android:text="@string/rate_header"
+        android:id="@+id/select_isp_header"
+        android:text="@string/select_isp_header"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:gravity="center"
@@ -28,22 +28,25 @@
         android:layout_height="wrap_content" >
 
 
-        <ImageButton
+        <Button
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="5dp"
+            android:text="@string/isp_pldt"
             android:contentDescription="@string/isp_pldt"/>
 
-        <ImageButton
+        <Button
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="5dp"
+            android:text="@string/isp_bayantel"
             android:contentDescription="@string/isp_bayantel"/>
 
-        <ImageButton
+        <Button
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="5dp"
+            android:text="@string/isp_globe"
             android:contentDescription="@string/isp_globe"/>
 
     </LinearLayout>
@@ -54,22 +57,25 @@
         android:layout_height="wrap_content" >
 
 
-        <ImageButton
+        <Button
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="5dp"
+            android:text="@string/isp_smart"
             android:contentDescription="@string/isp_smart"/>
 
-        <ImageButton
+        <Button
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="5dp"
+            android:text="@string/isp_sun"
             android:contentDescription="@string/isp_sun"/>
 
-        <ImageButton
+        <Button
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="5dp"
+            android:text="@string/isp_sky_broadband"
             android:contentDescription="@string/isp_sky_broadband"/>
 
     </LinearLayout>

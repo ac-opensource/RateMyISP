@@ -9,7 +9,7 @@
     <string name="main_description">Please rate your ISP accordingly and as fair and honest as you can.</string>
     <string name="submit">Submit</string>
     <string name="header">Internet Service Provider</string>
-    <string name="rate_header">Who\'s your Internet Service Provider?</string>
+    <string name="select_isp_header">Who\'s your Internet Service Provider?</string>
     <string name="isp_pldt">PLDT</string>
     <string name="isp_bayantel">Bayantel</string>
     <string name="isp_globe">Globe</string>
@@ -25,5 +25,9 @@
         <item>Sun</item>
         <item>Sky Broadband</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_rating_leave_comment">Leave a comment (Optional)</string>
 
 </resources>
