@@ -8,6 +8,14 @@
     <string name="welcome">Welcome!</string>
     <string name="main_description">Please rate your ISP accordingly and as fair and honest as you can.</string>
     <string name="submit">Submit</string>
+    <string name="header">Internet Service Provider</string>
+    <string name="rate_header">Who\'s your Internet Service Provider?</string>
+    <string name="isp_pldt">PLDT</string>
+    <string name="isp_bayantel">Bayantel</string>
+    <string name="isp_globe">Globe</string>
+    <string name="isp_smart">Smart</string>
+    <string name="isp_sun">Sun</string>
+    <string name="isp_sky_broadband">Sky Broadband</string>
 
     <string-array name="isp_array">
         <item>PLDT</item>
