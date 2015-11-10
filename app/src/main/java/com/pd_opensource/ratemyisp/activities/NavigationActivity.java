@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import com.pd_opensource.ratemyisp.R;
 import com.pd_opensource.ratemyisp.fragments.AddRatingFragment;
 import com.pd_opensource.ratemyisp.fragments.SelectISPFragment;
+import com.pd_opensource.ratemyisp.fragments.ViewRatingsFragment;
 import com.pd_opensource.ratemyisp.models.Events;
 
 import de.greenrobot.event.EventBus;
@@ -121,7 +122,7 @@ public class NavigationActivity extends AppCompatActivity
         } else if (id == R.id.nav_home) {
             getSupportFragmentManager().popBackStack();
         } else if (id == R.id.nav_manage) {
-
+            addFragment(ViewRatingsFragment.newInstance("PLDT"));
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_exit) {
