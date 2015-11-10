@@ -13,6 +13,8 @@ import android.widget.RatingBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -20,6 +22,7 @@ import com.parse.ParseObject;
 import com.parse.SaveCallback;
 import com.pd_opensource.ratemyisp.R;
 import com.pd_opensource.ratemyisp.models.Events;
+import com.pd_opensource.ratemyisp.models.Reviews;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,7 +37,7 @@ import pocketknife.SaveState;
  * Use the {@link AddRatingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddRatingFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class AddRatingFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_ISP = "ARG_ISP";
 
@@ -50,7 +53,7 @@ public class AddRatingFragment extends Fragment implements GoogleApiClient.Conne
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-
+    private LocationRequest mLocationRequest;
 
     public AddRatingFragment() {
         // Required empty public constructor
@@ -77,8 +80,18 @@ public class AddRatingFragment extends Fragment implements GoogleApiClient.Conne
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         buildGoogleApiClient();
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+                .setFastestInterval(1000); // 1 second, in milliseconds
+
         PocketKnife.bindArguments(this);
         PocketKnife.restoreInstanceState(this, savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -96,7 +109,6 @@ public class AddRatingFragment extends Fragment implements GoogleApiClient.Conne
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-        mGoogleApiClient.connect();
     }
 
     @Override
@@ -109,6 +121,9 @@ public class AddRatingFragment extends Fragment implements GoogleApiClient.Conne
     public void onConnected(Bundle bundle) {
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
+        if (mLastLocation == null) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
     }
 
     @Override
@@ -123,24 +138,23 @@ public class AddRatingFragment extends Fragment implements GoogleApiClient.Conne
 
     @OnClick(R.id.btn_submit_rating)
     public void onSubmit(Button button) {
-        ParseObject reviewObject = new ParseObject("Reviews");
-        reviewObject.put("isp", mISP);
-        reviewObject.put("comment", comments.getText().toString());
+        Reviews reviewObject = new Reviews();
+        reviewObject.setISP(mISP);
+        reviewObject.setRate(ratingBar.getRating());
+        reviewObject.setComment(comments.getText().toString());
+
         if(mLastLocation != null) {
-            ParseGeoPoint currentLocation = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            reviewObject.put("location", currentLocation);
+            reviewObject.setLocation(mLastLocation);
         } else {
             if(mGoogleApiClient.isConnected()) {
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                         mGoogleApiClient);
 
                 if(mLastLocation != null) {
-                    ParseGeoPoint currentLocation = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                    reviewObject.put("location", currentLocation);
+                    reviewObject.setLocation(mLastLocation);
                 }
             }
         }
-        reviewObject.put("rate", ratingBar.getRating());
         reviewObject.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -152,8 +166,27 @@ public class AddRatingFragment extends Fragment implements GoogleApiClient.Conne
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
     public void onDestroy() {
-        mGoogleApiClient.disconnect();
         super.onDestroy();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
     }
 }
